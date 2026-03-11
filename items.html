@@ -1,26 +1,54 @@
-<!DOCTYPE html> 
-<html> 
-<head> 
-  <title>Items</title> 
-
-  <!-- 
-	<script>
-  		!function(){var i="analytics",analytics=window[i]=window[i]||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","screen","once","off","on","addSourceMiddleware","addIntegrationMiddleware","setAnonymousId","addDestinationMiddleware","register"];analytics.factory=function(e){return function(){if(window[i].initialized)return window[i][e].apply(window[i],arguments);var n=Array.prototype.slice.call(arguments);if(["track","screen","alias","group","page","identify"].indexOf(e)>-1){var c=document.querySelector("link[rel='canonical']");n.push({__t:"bpc",c:c&&c.getAttribute("href")||void 0,p:location.pathname,u:location.href,s:location.search,t:document.title,r:document.referrer})}n.unshift(e);analytics.push(n);return analytics}};for(var n=0;n<analytics.methods.length;n++){var key=analytics.methods[n];analytics[key]=analytics.factory(key)}analytics.load=function(key,n){var t=document.createElement("script");t.type="text/javascript";t.async=!0;t.setAttribute("data-global-segment-analytics-key",i);t.src="https://cdn.segment.com/analytics.js/v1/" + key + "/analytics.min.js";var r=document.getElementsByTagName("script")[0];r.parentNode.insertBefore(t,r);analytics._loadOptions=n};analytics._writeKey="PS2g6lV7zq0Woh9GK5aUFkAm8Jn3w6kZ";;analytics.SNIPPET_VERSION="5.2.0";
-  		analytics.load("PS2g6lV7zq0Woh9GK5aUFkAm8Jn3w6kZ");
-  		analytics.page();
-  		}}();
-	</script>
-  -->
-  
-	<style>
-
-  </style>
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TechStore - Shop</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-  
-<body> 
-<h1>Items List</h1> 
-<p>Please select the items you want to choose</p>  
+<body>
 
-</body> 
+    <nav>
+        <h1>TechStore</h1>
+        <button onclick="logout()" style="width: auto; background: #e74c3c; padding: 5px 15px;">Logout</button>
+    </nav>
+
+    <div class="product-grid">
+        <div class="product-card">
+            <img src="https://via.placeholder.com/150?text=Phone+Pro" alt="Phone">
+            <h3>Galaxy X1</h3>
+            <p class="price">$899.00</p>
+            <button onclick="purchase('Galaxy X1')">Buy Now</button>
+        </div>
+
+        <div class="product-card">
+            <img src="https://via.placeholder.com/150?text=Phone+Mini" alt="Phone">
+            <h3>iPhone 15 Nano</h3>
+            <p class="price">$699.00</p>
+            <button onclick="purchase('iPhone 15 Nano')">Buy Now</button>
+        </div>
+
+        <div class="product-card">
+            <img src="https://via.placeholder.com/150?text=Foldable" alt="Phone">
+            <h3>Pixel Fold Lite</h3>
+            <p class="price">$1,099.00</p>
+            <button onclick="purchase('Pixel Fold Lite')">Buy Now</button>
+        </div>
+    </div>
+
+    <script>
+        // Security Check: If not logged in, kick back to login page
+        if (localStorage.getItem('isLoggedIn') !== 'true') {
+            window.location.href = 'index.html';
+        }
+
+        function purchase(itemName) {
+            alert('Thank you! You have successfully purchased the ' + itemName + '.');
+        }
+
+        function logout() {
+            localStorage.removeItem('isLoggedIn');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
 </html>
