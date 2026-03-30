@@ -3,17 +3,16 @@
 <head> 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Travel & Tech Demo</title> 
+    <title>Travel & Tech Demo - Login</title> 
 
     <script>
         !function(){var i="analytics",analytics=window[i]=window[i]||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","screen","once","off","on","addSourceMiddleware","addIntegrationMiddleware","setAnonymousId","addDestinationMiddleware","register"];analytics.factory=function(e){return function(){if(window[i].initialized)return window[i][e].apply(window[i],arguments);var n=Array.prototype.slice.call(arguments);if(["track","screen","alias","group","page","identify"].indexOf(e)>-1){var c=document.querySelector("link[rel='canonical']");n.push({__t:"bpc",c:c&&c.getAttribute("href")||void 0,p:location.pathname,u:location.href,s:location.search,t:document.title,r:document.referrer})}n.unshift(e);analytics.push(n);return analytics}};for(var n=0;n<analytics.methods.length;n++){var key=analytics.methods[n];analytics[key]=analytics.factory(key)}analytics.load=function(key,n){var t=document.createElement("script");t.type="text/javascript";t.async=!0;t.setAttribute("data-global-segment-analytics-key",i);t.src="https://cdn.segment.com/analytics.js/v1/" + key + "/analytics.min.js";var r=document.getElementsByTagName("script")[0];r.parentNode.insertBefore(t,r);analytics._loadOptions=n};analytics._writeKey="PS2g6lV7zq0Woh9GK5aUFkAm8Jn3w6kZ";;analytics.SNIPPET_VERSION="5.2.0";
         analytics.load("PS2g6lV7zq0Woh9GK5aUFkAm8Jn3w6kZ");
-        analytics.page('Home','Homepage');
+        // Initial page load track is now handled dynamically by the switchTab function below
         }}();
     </script>
 
     <script type="text/javascript">
-      // Insert X Event ID
       twq('event', 'tw-ra8zl-ra90f', {});
     </script>
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -43,12 +42,12 @@
         .tab-content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* Questionnaire Form Styles */
+        /* Form Styles (Used for both Login and Questionnaire) */
         h1 { text-align: center; color: #2d6cdf; font-size: 2.2em; letter-spacing: 1px; margin-top: 20px; }
         p.subtitle { text-align: center; color: #555; margin-bottom: 30px; }
         form { background: #fff; max-width: 700px; margin: 0 auto; padding: 32px 36px 24px 36px; border-radius: 12px; box-shadow: 0 4px 24px rgba(44, 62, 80, 0.08); border: 1px solid #e3e7ed; }
-        form input[type="text"], form input[type="email"], form textarea { width: 100%; padding: 12px 14px; margin-top: 8px; margin-bottom: 24px; border: 1px solid #cfd8dc; border-radius: 6px; font-size: 1em; background: #f9fbfc; transition: border 0.2s; box-sizing: border-box; resize: vertical; }
-        form input[type="text"]:focus, form input[type="email"]:focus, form textarea:focus { border: 1.5px solid #2d6cdf; outline: none; background: #fff; }
+        form input[type="text"], form input[type="email"], form input[type="password"], form textarea { width: 100%; padding: 12px 14px; margin-top: 8px; margin-bottom: 24px; border: 1px solid #cfd8dc; border-radius: 6px; font-size: 1em; background: #f9fbfc; transition: border 0.2s; box-sizing: border-box; resize: vertical; }
+        form input[type="text"]:focus, form input[type="email"]:focus, form input[type="password"]:focus, form textarea:focus { border: 1.5px solid #2d6cdf; outline: none; background: #fff; }
         form input[type="submit"] { background: linear-gradient(90deg, #2d6cdf 60%, #4f8cff 100%); color: #fff; border: none; border-radius: 6px; padding: 12px 32px; font-size: 1.1em; font-weight: 600; cursor: pointer; box-shadow: 0 2px 8px rgba(44, 62, 80, 0.07); transition: background 0.2s, box-shadow 0.2s; width: 100%; }
         form input[type="submit"]:hover { background: linear-gradient(90deg, #1b4fa0 60%, #2d6cdf 100%); box-shadow: 0 4px 16px rgba(44, 62, 80, 0.12); }
 
@@ -69,11 +68,27 @@
 <body> 
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NH9NG8KZ" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <nav>
-        <button class="tab-button active" onclick="switchTab('questionnaire', 'Home Questionnaire')">Questionnaire</button>
-        <button class="tab-button" onclick="switchTab('shop', 'Tech Shop')">Tech Shop</button>
+        <button id="nav-login" class="tab-button" onclick="switchTab('login', 'Login Page', 'Login')">Login</button>
+        <button id="nav-questionnaire" class="tab-button" onclick="switchTab('questionnaire', 'Home', 'Homepage')">Questionnaire</button>
+        <button id="nav-shop" class="tab-button" onclick="switchTab('shop', 'Tech Shop')">Tech Shop</button>
     </nav>
 
-    <div id="questionnaire" class="tab-content active">
+    <div id="login" class="tab-content">
+        <h1>Welcome Back</h1> 
+        <p class="subtitle">Please log in to continue. (Accepts any credentials for testing)</p>  
+        
+        <form name="loginForm" onsubmit="submitLogin(event)">
+            <label>Email:</label>
+            <input name="loginEmail" required type="email" placeholder="test@example.com"/> 
+            
+            <label>Password:</label>
+            <input name="loginPassword" required type="password" placeholder="••••••••"/> 
+            
+            <input name="submitLoginBtn" type="submit" value="Log In"/>
+        </form> 
+    </div>
+
+    <div id="questionnaire" class="tab-content">
         <h1>What is your favorite place to travel?</h1> 
         <p class="subtitle">I am building a directory of the sweetest travel destinations.</p>  
         
@@ -123,24 +138,46 @@
     </div>
 
     <script type="text/javascript">
-        // Global variables
         const userid = crypto.randomUUID();
 
-        // 1. Tab Switching Logic
-        function switchTab(tabId, pageName) {
+        // 1. Tab Switching Logic (Updated to support Category and Name for Segment Page calls)
+        function switchTab(tabId, pageCategory, pageName) {
+            // Hide all tabs and remove active class from buttons
             document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
 
+            // Show selected tab
             document.getElementById(tabId).classList.add('active');
-            
-            if(tabId === 'questionnaire') document.querySelectorAll('.tab-button')[0].classList.add('active');
-            if(tabId === 'shop') document.querySelectorAll('.tab-button')[1].classList.add('active');
+            document.getElementById('nav-' + tabId).classList.add('active');
 
-            // Track page view on tab change
-            analytics.page(pageName);
+            // --- SEGMENT TRACKING: Page View ---
+            // If a specific pageName is provided, use the category + name format. Otherwise just send the category/name.
+            if (pageName) {
+                analytics.page(pageCategory, pageName);
+            } else {
+                analytics.page(pageCategory);
+            }
         }
 
-        // 2. Questionnaire Submission Logic
+        // 2. Login Submission Logic
+        function submitLogin(e) {
+            e.preventDefault();
+            var form = e.target;
+            var email = form["loginEmail"].value;
+
+            // --- SEGMENT TRACKING: User Logged In ---
+            analytics.track("User Logged In", {
+                email: email
+            });
+
+            alert('Login successful! Redirecting to the Questionnaire...');
+            form.reset();
+            
+            // Automatically switch to the Questionnaire tab after logging in
+            switchTab('questionnaire', 'Home', 'Homepage');
+        }
+
+        // 3. Questionnaire Submission Logic
         function submitQuestionnaire(e){
             e.preventDefault();
             var form = e.target;
@@ -162,7 +199,6 @@
             });
             
             analytics.track('destination submitted', user, function() {
-                // Replaced window.location.href reload with a form reset for SPA behavior
                 alert('Thank you! Your destination has been submitted.');
                 form.reset();
             });
@@ -170,16 +206,20 @@
             analytics.debug(true);
         }
 
-        // 3. E-Commerce Purchase Logic
+        // 4. E-Commerce Purchase Logic
         function purchaseItem(itemName, itemPrice) {
             alert('Thank you! You have ordered: ' + itemName);
 
-            // Trigger the Segment track call EXACTLY as requested
             analytics.track("Item Ordered", {
                 item: itemName,
-                price: parseFloat(itemPrice) // Ensures price is tracked as a number
+                price: parseFloat(itemPrice) 
             });
         }
+
+        // Initialize the first view on page load to the Login Tab
+        window.onload = function() {
+            switchTab('login', 'Login Page', 'Login');
+        };
     </script>
 </body> 
 </html>
