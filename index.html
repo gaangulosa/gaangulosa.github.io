@@ -161,6 +161,7 @@
 
         // 2. Login Submission Logic
         function submitLogin(e) {
+            analytics.reset(); // Reset cookies so the event is not attributted to other user.
             e.preventDefault();
             var form = e.target;
             var email = form["loginEmail"].value;
