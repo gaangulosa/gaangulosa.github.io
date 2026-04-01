@@ -3,7 +3,7 @@
 <head> 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Travel & Tech Demo - Login</title> 
+    <title>Travel & Tech Demo - App</title> 
 
     <script>
         !function(){var i="analytics",analytics=window[i]=window[i]||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","screen","once","off","on","addSourceMiddleware","addIntegrationMiddleware","setAnonymousId","addDestinationMiddleware","register"];analytics.factory=function(e){return function(){if(window[i].initialized)return window[i][e].apply(window[i],arguments);var n=Array.prototype.slice.call(arguments);if(["track","screen","alias","group","page","identify"].indexOf(e)>-1){var c=document.querySelector("link[rel='canonical']");n.push({__t:"bpc",c:c&&c.getAttribute("href")||void 0,p:location.pathname,u:location.href,s:location.search,t:document.title,r:document.referrer})}n.unshift(e);analytics.push(n);return analytics}};for(var n=0;n<analytics.methods.length;n++){var key=analytics.methods[n];analytics[key]=analytics.factory(key)}analytics.load=function(key,n){var t=document.createElement("script");t.type="text/javascript";t.async=!0;t.setAttribute("data-global-segment-analytics-key",i);t.src="https://cdn.segment.com/analytics.js/v1/" + key + "/analytics.min.js";var r=document.getElementsByTagName("script")[0];r.parentNode.insertBefore(t,r);analytics._loadOptions=n};analytics._writeKey="PS2g6lV7zq0Woh9GK5aUFkAm8Jn3w6kZ";;analytics.SNIPPET_VERSION="5.2.0";
@@ -29,13 +29,17 @@
     
     <style>
         /* Combined Global Styles */
-        body { background: #f6f8fa; font-family: 'Segoe UI', Arial, sans-serif; color: #222; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+        body { background: #f6f8fa; font-family: 'Segoe UI', Arial, sans-serif; color: #222; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; position: relative; }
         
         /* Navigation Tabs */
-        nav { width: 100%; background: #2c3e50; padding: 0 2rem; display: flex; justify-content: center; margin-bottom: 20px;}
+        nav { width: 100%; background: #2c3e50; padding: 0 2rem; display: flex; justify-content: center; margin-bottom: 20px; position: relative;}
         .tab-button { background: none; color: #aeb6bf; border: none; padding: 1.5rem 2rem; font-size: 1.1rem; cursor: pointer; transition: 0.3s; border-bottom: 4px solid transparent; }
         .tab-button:hover { color: white; }
         .tab-button.active { color: white; border-bottom: 4px solid #2d6cdf; font-weight: bold; }
+
+        /* Logout Button */
+        .logout-btn { position: absolute; right: 2rem; top: 1.2rem; background-color: #e74c3c; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 1rem; font-weight: 600; transition: background 0.3s; display: none; /* Hidden by default */ }
+        .logout-btn:hover { background-color: #c0392b; }
 
         /* Tab Content */
         .tab-content { display: none; width: 100%; max-width: 1200px; padding: 0 2rem 2rem 2rem; animation: fadeIn 0.4s; }
@@ -62,6 +66,7 @@
         @media (max-width: 800px) {
             form { max-width: 95vw; padding: 18px 8vw; }
             h1 { font-size: 1.4em; }
+            .logout-btn { top: 4rem; right: 1rem; padding: 6px 12px; font-size: 0.9em; } /* Adjust for mobile */
         }
     </style>
 </head> 
@@ -71,6 +76,8 @@
         <button id="nav-login" class="tab-button" onclick="switchTab('login', 'Login Page', 'Login')">Login</button>
         <button id="nav-questionnaire" class="tab-button" onclick="switchTab('questionnaire', 'Home', 'Homepage')">Questionnaire</button>
         <button id="nav-shop" class="tab-button" onclick="switchTab('shop', 'Tech Shop')">Tech Shop</button>
+
+        <button id="logout-btn" class="logout-btn" onclick="logoutUser()">Logout</button>
     </nav>
 
     <div id="login" class="tab-content">
@@ -140,7 +147,7 @@
     <script type="text/javascript">
         const userid = crypto.randomUUID();
 
-        // 1. Tab Switching Logic (Updated to support Category and Name for Segment Page calls)
+        // 1. Tab Switching Logic
         function switchTab(tabId, pageCategory, pageName) {
             // Hide all tabs and remove active class from buttons
             document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
@@ -150,8 +157,15 @@
             document.getElementById(tabId).classList.add('active');
             document.getElementById('nav-' + tabId).classList.add('active');
 
+            // Manage Logout button visibility
+            const logoutBtn = document.getElementById('logout-btn');
+            if (tabId === 'login') {
+                logoutBtn.style.display = 'none';
+            } else {
+                logoutBtn.style.display = 'block';
+            }
+
             // --- SEGMENT TRACKING: Page View ---
-            // If a specific pageName is provided, use the category + name format. Otherwise just send the category/name.
             if (pageName) {
                 analytics.page(pageCategory, pageName);
             } else {
@@ -178,8 +192,20 @@
             switchTab('questionnaire', 'Home', 'Homepage');
         }
 
-        // 3. Questionnaire Submission Logic
+        // 3. Logout Logic
+        function logoutUser() {
+            // --- SEGMENT TRACKING: Reset ---
+            analytics.reset();
+            
+            alert('You have been logged out and tracking has been reset.');
+            
+            // Redirect back to login tab
+            switchTab('login', 'Login Page', 'Login');
+        }
+
+        // 4. Questionnaire Submission Logic
         function submitQuestionnaire(e){
+            //analytics.reset();
             e.preventDefault();
             var form = e.target;
             var email = form["email"].value;
@@ -207,7 +233,7 @@
             analytics.debug(true);
         }
 
-        // 4. E-Commerce Purchase Logic
+        // 5. E-Commerce Purchase Logic
         function purchaseItem(itemName, itemPrice) {
             alert('Thank you! You have ordered: ' + itemName);
 
